@@ -14,3 +14,70 @@
 // BONUS possibili:
 // 1- quando si clicca su una bomba e finisce la partita, evitare che si possa cliccare su altre celle
 // 2- quando si clicca su una bomba e finisce la partita, il software scopre tutte le bombe nascoste
+
+
+const grid = document.getElementById('grid');
+const buttonEasy = document.getElementById('easy');
+const buttonMedium = document.getElementById('medium');
+const buttonHard = document.getElementById('hard');
+
+buttonEasy.addEventListener('click', () => {
+
+        startGame(100, 'easy');
+
+    }
+)
+    
+buttonMedium.addEventListener('click', () => {
+        
+        startGame(81, 'medium');
+
+    }
+)
+
+buttonHard.addEventListener('click', () => {
+
+        startGame(49, 'hard');
+
+    }
+)
+
+
+
+function startGame(totCells, level) {
+
+    createElementsInGrid(totCells, level);
+
+};
+
+
+function createElementsInGrid(totalCells, level) {
+    const grid = document.getElementById('grid');
+
+    grid.innerHTML = '';
+
+    for (let i = 0; i < totalCells; i++){
+
+        const cell = document.createElement('div');
+
+        cell.id = i + 1;
+
+        cell.className = 'cell';
+
+        cell.classList.add(level);
+
+        cell.innerText = (i + 1);
+       
+
+        grid.appendChild(cell);
+
+
+        cell.addEventListener('click', function(){
+            cell.classList.toggle('bg-blue');
+        });
+
+        console.log(cell);
+    }  
+}
+
+
