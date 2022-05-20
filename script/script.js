@@ -5,6 +5,7 @@
 // con difficoltà 1 => tra 1 e 100
 // con difficoltà 2 => tra 1 e 81
 // con difficoltà 3 => tra 1 e 49
+
 // Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe.
 // I numeri nella lista delle bombe non possono essere duplicati.
 // In seguito l’utente clicca su una cella: se il numero è presente nella lista dei numeri generati - abbiamo calpestato una bomba - la cella si colora di rosso e la partita termina,
@@ -16,6 +17,7 @@
 // 2- quando si clicca su una bomba e finisce la partita, il software scopre tutte le bombe nascoste
 
 
+let positions = [];
 const grid = document.getElementById('grid');
 const buttonEasy = document.getElementById('easy');
 const buttonMedium = document.getElementById('medium');
@@ -23,35 +25,62 @@ const buttonHard = document.getElementById('hard');
 
 buttonEasy.addEventListener('click', () => {
 
-        startGame(100, 'easy');
+    startGame(100, 'easy');
+    generateBombs(100)
+    grid.classList.remove('noClick');
 
-    }
-)
+})
     
 buttonMedium.addEventListener('click', () => {
-        
-        startGame(81, 'medium');
 
-    }
-)
+    startGame(81, 'medium');
+    generateBombs(81)
+    grid.classList.remove('noClick');
+
+})
 
 buttonHard.addEventListener('click', () => {
 
-        startGame(49, 'hard');
+    startGame(49, 'hard');
+    generateBombs(49)
+    grid.classList.remove('noClick');
 
-    }
-)
-
+})
 
 
 function startGame(totCells, level) {
+
+    const bombPositions = generateBombs(totCells);
+    console.log(bombPositions);
 
     createElementsInGrid(totCells, level);
 
 };
 
+//generare 16 numeri casuali nello stesso range
+
+function generateBombs(max) {
+    
+    while (positions.length < 16) {
+
+        const position = generateRandomNumber(1, max);
+        
+        if (positions.includes(position) === false) {
+            positions.push(position)
+        }
+    }
+    return positions;
+}
+
+function generateRandomNumber(min, max) {
+
+    const range = max - min + 1;
+    return Math.floor(Math.random() * range) + min;
+}
+
 
 function createElementsInGrid(totalCells, level) {
+
     const grid = document.getElementById('grid');
 
     grid.innerHTML = '';
@@ -59,11 +88,9 @@ function createElementsInGrid(totalCells, level) {
     for (let i = 0; i < totalCells; i++){
 
         const cell = document.createElement('div');
-
         cell.id = i + 1;
 
         cell.className = 'cell';
-
         cell.classList.add(level);
 
         cell.innerText = (i + 1);
@@ -71,13 +98,38 @@ function createElementsInGrid(totalCells, level) {
 
         grid.appendChild(cell);
 
+        cell.addEventListener('click', () => {
 
-        cell.addEventListener('click', function(){
-            cell.classList.toggle('bg-blue');
-        });
+            
+            for (i = 0; i <= positions.length; i++){
 
-        console.log(cell);
-    }  
+                if (cell.innerText == positions[i]) {
+                    cell.classList.add('bg-red');
+                    grid.classList.add('noClick');
+                    showAlert('YOU LOST!')
+                    
+                } else {
+                    
+                    cell.classList.add('bg-blue');
+                }
+            }
+            
+        })
+    }
 }
 
 
+// Alert 
+function showAlert(message) {
+
+    const grid = document.getElementById('grid');
+    const alertMessage = `
+    <div class="game-alert">
+    <div class="game-alert-message">
+    ${message}
+    </div>
+    </div>
+    `;
+
+    grid.innerHTML = grid.innerHTML + alertMessage;
+}

@@ -39,12 +39,20 @@ body{
     cursor: pointer;
 }
 
+/* Sfondi colore celle */
 .cell.bg-blue{
     background-color: rgb(35, 80, 195);
     color: white;
     cursor: pointer;
 }
 
+.cell.bg-red {
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+
+/* Divisione celle griglia */
 .cell.hard {
     width: calc(100% / 7);
     height: calc(100% / 7);
@@ -58,4 +66,28 @@ body{
 .cell.easy {
     width: calc(100% / 10);
     height: calc(100% / 10);
+}
+
+.noClick {
+    pointer-events: none;
+}
+
+
+/* messaggi Alert */
+.game-alert{
+    background-color: rgba(182, 14, 14, 0.455);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ 
+.game-alert-message{
+    font-size: 70px;
+    font-weight: 800;
+    padding: 20px;
 }
